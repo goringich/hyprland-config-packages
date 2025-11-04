@@ -1,0 +1,60 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 28,
+  "margin-top": 6,
+  "margin-left": 6,
+  "margin-right": 6,
+  "modules-left": ["hyprland/workspaces", "hyprland/window"],
+  "modules-center": ["mpris"],
+  "modules-right": ["pulseaudio", "network", "bluetooth", "clock", "tray"],
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "on-click": "activate",
+    "all-outputs": true,
+    "format-icons": {
+      "default": "●",
+      "active": "",
+      "urgent": ""
+    }
+  },
+  "hyprland/window": {
+    "max-length": 60,
+    "separate-outputs": false
+  },
+  "mpris": {
+    "format": "{title} — {artist}",
+    "format-paused": "⏸ {title} — {artist}",
+    "max-length": 40
+  },
+  "pulseaudio": {
+    "format": "{volume}% {icon}",
+    "format-muted": "muted ",
+    "format-icons": {
+      "headphones": "",
+      "default": ["","",""]
+    },
+    "on-click": "pavucontrol"
+  },
+  "network": {
+    "format-wifi": "{essid} {signalStrength}%",
+    "format-ethernet": "eth ",
+    "format-disconnected": "disconnected",
+    "max-length": 20
+  },
+  "bluetooth": {
+    "format": "{status}",
+    "format-connected": " {num_connections}",
+    "format-disabled": "disabled",
+    "format-off": "off",
+    "on-click": "blueman-manager"
+  },
+  "clock": {
+    "format": "{:%a %d %b  %H:%M}",
+    "tooltip-format": "{:%Y-%m-%d %H:%M:%S}"
+  },
+  "tray": {
+    "icon-size": 16,
+    "spacing": 8
+  }
+}
