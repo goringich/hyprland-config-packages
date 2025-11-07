@@ -20,7 +20,7 @@
 sudo pacman -Syu --needed git rsync
 
 # 2. Клонируй репозиторий в домашнюю директорию (пример)
-git clone https://github.com/<your-user>/arch-dotfiles.git ~/arch-dotfiles
+git clone https://github.com/goringich/arch-dotfiles.git ~/arch-dotfiles
 cd ~/arch-dotfiles
 
 # 3. Создай бэкап текущих конфигов (если система уже настроена)
