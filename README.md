@@ -20,7 +20,7 @@
 sudo pacman -Syu --needed git rsync
 
 # 2. Клонируй репозиторий в домашнюю директорию (пример)
-git clone https://github.com/goringich/arch-dotfiles.git ~/arch-dotfiles
+git clone git@github.com:goringich/hyprland-config-packages.git ~/arch-dotfiles
 cd ~/arch-dotfiles
 
 # 3. Создай бэкап текущих конфигов (если система уже настроена)
