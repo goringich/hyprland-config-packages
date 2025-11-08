@@ -1,0 +1,25 @@
+# Patterns to exclude when exporting configs
+# Comment out lines you want to include
+# Common caches and logs
+**/.cache/
+**/*.log
+**/*lock*
+**/*.swp
+**/*.tmp
+
+# Hyprland machine-specific files (optional)
+hypr/monitors.conf
+hypr/hypridle.conf.local
+hypr/local.conf
+
+# Waybar runtime
+waybar/*.pid
+waybar/logs/
+
+# AGS build artifacts
+ags/.out/
+ags/node_modules/
+
+# GTK/Kvantum caches
+Kvantum/*cache*
+

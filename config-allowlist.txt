@@ -1,0 +1,28 @@
+# List of ~/.config subdirectories to export (Hyprland environment only)
+# Edit this list to include/exclude components as you prefer.
+ags
+hypr
+waybar
+rofi
+kitty
+qt5ct
+qt6ct
+Kvantum
+gtk-3.0
+gtk-4.0
+fastfetch
+swaync
+swappy
+wallust
+wlogout
+wofi
+
+# Intentionally excluded (app-specific or machine-specific):
+# btop
+# bpytop
+# cava
+# mpv
+# pipewire
+# vscode / Code - OSS
+# discord / telegram-desktop / browsers
+# hypr/monitors.conf (per-host); see rsync-excludes.txt to skip

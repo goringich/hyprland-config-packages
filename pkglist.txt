@@ -148,6 +148,7 @@ playerctl
 pokemon-colorscripts-git
 polkit-gnome
 power-profiles-daemon
+pv
 python-numpy
 python-pip
 python-pipx
