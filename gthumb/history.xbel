@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xbel version="1.0"
+      xmlns:bookmark="http://www.freedesktop.org/standards/desktop-bookmarks"
+      xmlns:mime="http://www.freedesktop.org/standards/shared-mime-info"
+>
+  <bookmark href="file:///home/goringich/Downloads" added="2025-09-25T00:27:08.435139Z" modified="2025-09-25T00:27:08.435143Z" visited="2025-09-25T00:27:08.435140Z">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <bookmark:applications>
+          <bookmark:application name="gThumb" exec="&apos;org.gnome.gThumb %u&apos;" modified="2025-09-25T00:27:08.435142Z" count="1"/>
+        </bookmark:applications>
+        <bookmark:private/>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="file:///home/goringich/Desktop/portfolio-mcu/3/public/images" added="2025-09-25T00:27:08.435144Z" modified="2025-09-25T00:27:08.435146Z" visited="2025-09-25T00:27:08.435144Z">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <bookmark:applications>
+          <bookmark:application name="gThumb" exec="&apos;org.gnome.gThumb %u&apos;" modified="2025-09-25T00:27:08.435144Z" count="1"/>
+        </bookmark:applications>
+        <bookmark:private/>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="file:///home/goringich/Desktop/portfolio-mcu/3/public" added="2025-09-25T00:27:08.435147Z" modified="2025-09-25T00:27:08.435149Z" visited="2025-09-25T00:27:08.435147Z">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <bookmark:applications>
+          <bookmark:application name="gThumb" exec="&apos;org.gnome.gThumb %u&apos;" modified="2025-09-25T00:27:08.435147Z" count="1"/>
+        </bookmark:applications>
+        <bookmark:private/>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="file:///home/goringich/Desktop/portfolio-mcu/3" added="2025-09-25T00:27:08.435150Z" modified="2025-09-25T00:27:08.435152Z" visited="2025-09-25T00:27:08.435150Z">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <bookmark:applications>
+          <bookmark:application name="gThumb" exec="&apos;org.gnome.gThumb %u&apos;" modified="2025-09-25T00:27:08.435151Z" count="1"/>
+        </bookmark:applications>
+        <bookmark:private/>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="file:///home/goringich/Desktop/portfolio-mcu" added="2025-09-25T00:27:08.435153Z" modified="2025-09-25T00:27:08.435154Z" visited="2025-09-25T00:27:08.435153Z">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <bookmark:applications>
+          <bookmark:application name="gThumb" exec="&apos;org.gnome.gThumb %u&apos;" modified="2025-09-25T00:27:08.435154Z" count="1"/>
+        </bookmark:applications>
+        <bookmark:private/>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="file:///home/goringich" added="2025-09-25T00:27:08.435155Z" modified="2025-09-25T00:27:08.435159Z" visited="2025-09-25T00:27:08.435155Z">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <bookmark:applications>
+          <bookmark:application name="gThumb" exec="&apos;org.gnome.gThumb %u&apos;" modified="2025-09-25T00:27:08.435156Z" count="1"/>
+        </bookmark:applications>
+        <bookmark:private/>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="file:///" added="2025-09-25T00:27:08.435159Z" modified="2025-09-25T00:27:08.435162Z" visited="2025-09-25T00:27:08.435159Z">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <bookmark:applications>
+          <bookmark:application name="gThumb" exec="&apos;org.gnome.gThumb %u&apos;" modified="2025-09-25T00:27:08.435161Z" count="1"/>
+        </bookmark:applications>
+        <bookmark:private/>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="file:///home/goringich/Pictures/Screenshots" added="2025-09-25T00:27:08.435164Z" modified="2025-09-25T00:27:08.435165Z" visited="2025-09-25T00:27:08.435164Z">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <bookmark:applications>
+          <bookmark:application name="gThumb" exec="&apos;org.gnome.gThumb %u&apos;" modified="2025-09-25T00:27:08.435164Z" count="1"/>
+        </bookmark:applications>
+        <bookmark:private/>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="file:///home/goringich/Pictures/wallpapers" added="2025-09-25T00:27:08.435165Z" modified="2025-09-25T00:27:08.435166Z" visited="2025-09-25T00:27:08.435166Z">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <bookmark:applications>
+          <bookmark:application name="gThumb" exec="&apos;org.gnome.gThumb %u&apos;" modified="2025-09-25T00:27:08.435166Z" count="1"/>
+        </bookmark:applications>
+        <bookmark:private/>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="file:///home/goringich/Pictures" added="2025-09-25T00:27:08.435167Z" modified="2025-09-25T00:27:08.435168Z" visited="2025-09-25T00:27:08.435167Z">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <bookmark:applications>
+          <bookmark:application name="gThumb" exec="&apos;org.gnome.gThumb %u&apos;" modified="2025-09-25T00:27:08.435168Z" count="1"/>
+        </bookmark:applications>
+        <bookmark:private/>
+      </metadata>
+    </info>
+  </bookmark>
+</xbel>

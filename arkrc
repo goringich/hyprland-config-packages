@@ -1,0 +1,10 @@
+[ExtractDialog]
+1920x1080 screen: Window-Maximized=true
+DirHistory[$e]=$HOME/Desktop/scibox-frontend/,$HOME/Desktop/scibox-frontend/postgres/,$HOME/Downloads/,$HOME/Desktop/Obsidian/Studing/Матеша/Операции/Лекции/,$HOME/Desktop/work/frontend/src/assets/fonts/Proxima Nova/,$HOME/Desktop/,$HOME/Downloads/styles/,$HOME/Downloads/trash/
+
+[General]
+LockSidebar=true
+ShowSidebar=true
+
+[MainWindow]
+StatusBar=Disabled

@@ -1,0 +1,15 @@
+selected_gpu: 10DE:2C02-1569:F322-0000:01:00.0
+plots_time_period: 60
+plots_per_row: 2
+stats_poll_interval_ms: 0
+gpus:
+  10DE:2C02-1569:F322-0000:01:00.0:
+    plots:
+    - - !Temperature GPU
+      - !Temperature GPU Hotspot
+    - - GpuClock
+      - VramClock
+    - - FanRpm
+      - FanPwm
+    - - PowerCurrent
+      - PowerCap

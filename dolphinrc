@@ -1,0 +1,14 @@
+[ExtractDialog]
+1920x1080 screen: Window-Maximized=true
+DirHistory[$e]=$HOME/Desktop/Елизавета/hakaton/,$HOME/Desktop/
+
+[General]
+Version=202
+ViewPropsTimestamp=2025,7,21,21,4,14.037
+
+[KFileDialog Settings]
+Places Icons Auto-resize=false
+Places Icons Static Size=22
+
+[MainWindow]
+MenuBar=Disabled

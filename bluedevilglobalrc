@@ -1,0 +1,8 @@
+[Adapters]
+38:FC:98:A6:40:C2_powered=true
+
+[Devices]
+connectedDevices=
+
+[General]
+bluetoothBlocked=true

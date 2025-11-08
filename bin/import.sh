@@ -32,14 +32,15 @@ fi
 # 3) Install native packages
 if [[ -f "$PKG_NATIVE" ]]; then
   echo "Installing native packages from pkglist.txt (sudo pacman)..."
-  sudo pacman -Syu --needed - < "$PKG_NATIVE"
+  # Filter out blank lines and comments for safety
+  grep -Ev '^\s*(#|$)' "$PKG_NATIVE" | sudo pacman -Syu --needed -
 fi
 
 # 4) Install AUR packages (optional)
 if [[ -f "$PKG_AUR" ]]; then
   if command -v yay >/dev/null; then
     echo "Installing AUR packages from aur-pkglist.txt (yay)..."
-    yay -S --needed - < "$PKG_AUR"
+    grep -Ev '^\s*(#|$)' "$PKG_AUR" | yay -S --needed -
   else
     echo "aur-pkglist.txt found but no AUR helper (yay) installed. Skip."
   fi

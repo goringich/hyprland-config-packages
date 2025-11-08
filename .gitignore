@@ -1,0 +1,68 @@
+# Dotfiles repo for ~/.config
+# Track configs while excluding sensitive/noisy app data.
+
+# --- Browsers / tokens / app storage (sensitive) ---
+/Code/
+/Code - OSS/
+/google-chrome/
+/google-chrome-for-testing/
+/Electron/
+/obsidian/
+/Azure Accounts/
+/dconf/
+/pulse/
+/kwallet*/
+/libaccounts-glib/
+/session/
+
+# --- IDE/editor caches (VS Code etc.) ---
+/Code/**/Cache/
+/Code/**/Cached*/
+/Code/**/blob_storage/
+/Code/**/Code Cache/
+/Code/**/Crashpad/
+/Code/**/GPUCache/
+/Code/**/Cookies*
+/Code/**/Network Persistent State
+/Code/**/TransportSecurity
+/Code/**/Trust Tokens*
+/Code/**/SharedStorage*
+
+# --- Generic caches/logs/temp across apps ---
+**/Cache/
+**/cache/
+**/Cached*/
+**/Crashpad/
+**/GPUCache/
+**/blob_storage/
+**/*-journal
+**/*.log
+*.lock
+*~
+
+# --- Backups & machine-specific noise ---
+/hypr-backup*/
+/waybar.backup/
+
+# --- Misc app-specific noisy data ---
+/Code Cache/
+/Crashpad/
+/Blob Storage/
+/GPUCache/
+/TransportSecurity
+/Trust Tokens*
+/Cookies*
+/Network Persistent State
+/SharedStorage*
+
+# --- Additional app profiles we don't want in dotfiles ---
+/libreoffice/
+/vscode-sqltools/
+/menus/
+
+# --- Common backup artifacts ---
+**/*.bak
+
+# --- Keep core configs (examples) ---
+# hypr/, waybar/, swaync/, kitty/, starship.toml, etc. are kept by default.
+# Add more ignores below as needed.
