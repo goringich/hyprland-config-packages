@@ -1,10 +1,13 @@
+[Added Associations]
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=libreoffice.desktop;
 
 [Default Applications]
-x-scheme-handler/http=google-chrome.desktop
-x-scheme-handler/https=google-chrome.desktop
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=libreoffice.desktop;
+application/x-extension-burp=install4j_1a277sv-BurpSuitePro.desktop
+application/x-wayland-gnome-saved-search=thunar.desktop
+inode/directory=thunar.desktop
 text/html=google-chrome.desktop
 x-scheme-handler/about=google-chrome.desktop
+x-scheme-handler/http=google-chrome.desktop
+x-scheme-handler/https=google-chrome.desktop
 x-scheme-handler/unknown=google-chrome.desktop
-inode/directory=thunar.desktop
-application/x-wayland-gnome-saved-search=thunar.desktop
-application/x-extension-burp=install4j_1a277sv-BurpSuitePro.desktop

@@ -1,0 +1,65 @@
+{
+  "version": 3,
+  "requesterUsername": "goringich",
+  "requesterAvatarIconUri": {
+    "$mid": 1,
+    "path": "/u/66201122",
+    "scheme": "https",
+    "authority": "avatars.githubusercontent.com",
+    "query": "v=4"
+  },
+  "responderUsername": "GitHub Copilot",
+  "responderAvatarIconUri": {
+    "id": "copilot"
+  },
+  "initialLocation": "editor",
+  "requests": [
+    {
+      "requestId": "request_e1252491-31c4-4e96-8255-e4467319b0fc",
+      "message": {
+        "text": "",
+        "parts": []
+      },
+      "variableData": {
+        "variables": []
+      },
+      "response": [
+        {
+          "kind": "textEditGroup",
+          "uri": {
+            "$mid": 1,
+            "fsPath": "Untitled-1",
+            "external": "untitled:Untitled-1",
+            "path": "Untitled-1",
+            "scheme": "untitled"
+          },
+          "edits": [
+            [],
+            [
+              {
+                "text": "bind = $mainMod CTRL, N, exec, $scriptsDir/RunInTerminal.sh \"$term\" \"$scriptsDir/NetworkDebug.sh\"\nbind = $mainMod CTRL ALT, N, exec, $scriptsDir/RunInTerminal.sh \"$term\" \"$scriptsDir/NetworkFix.sh\"",
+                "range": {
+                  "startLineNumber": 1,
+                  "startColumn": 1,
+                  "endLineNumber": 1,
+                  "endColumn": 1
+                }
+              }
+            ],
+            []
+          ],
+          "done": true
+        }
+      ],
+      "responseId": "response_b6761f18-5a6d-4e0e-8800-06cb95a7771e",
+      "isCanceled": false,
+      "contentReferences": [],
+      "codeCitations": [],
+      "timestamp": 1762567601672
+    }
+  ],
+  "sessionId": "cad68c88-b252-4232-86a5-1dd23d975f03",
+  "creationDate": 1762567601643,
+  "isImported": false,
+  "lastMessageDate": 1762567601672
+}

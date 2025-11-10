@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.0",
+  "name": "Podcast_Voice_Igor_SoloCast",
+  "device": "alsa_input.usb-03f0_HyperX_SoloCast-00.mono-fallback",
+  "type": "input",
+  "plugins": [
+    {
+      "id": "rnnoise",
+      "name": "Noise Reduction",
+      "enabled": true,
+      "settings": {
+        "model": "Standard",
+        "input_gain": 0.0,
+        "output_gain": 0.0,
+        "bypass_when_silent": true,
+        "sensitivity": 0.6
+      }
+    },
+    {
+      "id": "highpass",
+      "name": "Highpass Filter",
+      "enabled": true,
+      "settings": {
+        "frequency": 60.0,
+        "order": 2
+      }
+    },
+    {
+      "id": "deesser",
+      "name": "De-Esser",
+      "enabled": true,
+      "settings": {
+        "frequency": 6000.0,
+        "f1": 4500.0,
+        "f2": 9000.0,
+        "threshold": -20.0,
+        "ratio": 2.0,
+        "attack": 5.0,
+        "release": 80.0,
+        "makeup": 0.0,
+        "mode": "split"
+      }
+    },
+    {
+      "id": "equalizer",
+      "name": "Equalizer",
+      "enabled": true,
+      "settings": {
+        "mode": "bands",
+        "preamp": 0.0,
+        "bands": [
+          {
+            "type": "lowshelf",
+            "freq": 100.0,
+            "gain": 3.0,
+            "q": 0.7
+          },
+          {
+            "type": "peaking",
+            "freq": 400.0,
+            "gain": -2.0,
+            "q": 1.0
+          },
+          {
+            "type": "peaking",
+            "freq": 3000.0,
+            "gain": 2.0,
+            "q": 0.9
+          },
+          {
+            "type": "highshelf",
+            "freq": 8000.0,
+            "gain": 4.0,
+            "q": 0.7
+          }
+        ]
+      }
+    },
+    {
+      "id": "compressor",
+      "name": "Compressor",
+      "enabled": true,
+      "settings": {
+        "threshold": -12.0,
+        "ratio": 3.0,
+        "attack": 10.0,
+        "release": 150.0,
+        "knee": 1.5,
+        "makeup": 3.0,
+        "lookahead": 2.0,
+        "mix": 1.0
+      }
+    },
+    {
+      "id": "limiter",
+      "name": "Limiter",
+      "enabled": true,
+      "settings": {
+        "ceiling": -1.0,
+        "release": 50.0,
+        "lookahead": 2.0,
+        "auto_release": false,
+        "oversampling": 4
+      }
+    }
+  ]
+}

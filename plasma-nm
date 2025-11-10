@@ -1,7 +1,1 @@
-[General]
-AirplaneModeEnabled=false
-HotspotConnectionPath=
-HotspotPassword=C919DAA4E941D42BECAA7E4C60
-ManageVirtualConnections=true
-SystemConnectionsByDefault=false
-UnlockModemOnDetection=true
+/home/goringich/.config/wm/plasma-nm
