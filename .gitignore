@@ -14,6 +14,8 @@
 /kwallet*/
 /libaccounts-glib/
 /session/
+/apps/Code/
+/apps/google-chrome/
 
 # --- IDE/editor caches (VS Code etc.) ---
 /Code/**/Cache/

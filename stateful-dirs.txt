@@ -1,0 +1,8 @@
+# Directories under ~/.config that store credentials or machine-specific state.
+# These should never be symlinked into tracked dotfiles or wiped during import.
+Code
+Code - OSS
+google-chrome
+google-chrome-for-testing
+Electron
+obsidian

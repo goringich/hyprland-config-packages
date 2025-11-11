@@ -1,2 +1,0 @@
-bind = $mainMod CTRL, N, exec, $scriptsDir/RunInTerminal.sh "$term" "$scriptsDir/NetworkDebug.sh"
-bind = $mainMod CTRL ALT, N, exec, $scriptsDir/RunInTerminal.sh "$term" "$scriptsDir/NetworkFix.sh"

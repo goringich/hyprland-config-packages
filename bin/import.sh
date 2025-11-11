@@ -6,6 +6,7 @@ SRC_CONFIG="$REPO_ROOT/.config"
 DEST_CONFIG="$HOME/.config"
 PKG_NATIVE="$REPO_ROOT/pkglist.txt"
 PKG_AUR="$REPO_ROOT/aur-pkglist.txt"
+STATEFUL_FILE="$SRC_CONFIG/stateful-dirs.txt"
 
 # 0) Pre-flight
 if ! command -v rsync >/dev/null; then
@@ -23,10 +24,22 @@ fi
 
 # 2) Copy configs from repo
 if [[ -d "$SRC_CONFIG" ]]; then
-  rsync -a --delete "$SRC_CONFIG/" "$DEST_CONFIG/"
+  RSYNC_ARGS=(-a --delete)
+  if [[ -f "$STATEFUL_FILE" ]]; then
+    mapfile -t STATEFUL_DIRS < <(grep -Ev '^\s*#|^\s*$' "$STATEFUL_FILE")
+    for dir in "${STATEFUL_DIRS[@]}"; do
+      RSYNC_ARGS+=("--exclude=$dir" "--exclude=$dir/**")
+    done
+  fi
+  rsync "${RSYNC_ARGS[@]}" "$SRC_CONFIG/" "$DEST_CONFIG/"
   echo "Configs synced to $DEST_CONFIG"
 else
   echo "No .config directory found in repo at $SRC_CONFIG" >&2
+fi
+
+# 2a) Recreate local symlinks/templates for stateful configs
+if [[ -x "$DEST_CONFIG/bin/fix-config-links.sh" ]]; then
+  "$DEST_CONFIG/bin/fix-config-links.sh"
 fi
 
 # 3) Install native packages
