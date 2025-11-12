@@ -59,9 +59,12 @@ alias jctl="journalctl -p 3 -xb"
 alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 
 if command -v pokemon-colorscripts >/dev/null 2>&1 && command -v fastfetch >/dev/null 2>&1; then
+  # Use the CachyOS-style fastfetch preset while keeping the Pokémon logo splash
   pokemon-colorscripts --no-title -s -r |
-    fastfetch -c "$HOME/.config/fastfetch/config-pokemon.jsonc" \
+    fastfetch -c "$HOME/.config/fastfetch/config-v2.jsonc" \
       --logo-type file-raw --logo-height 10 --logo-width 5 --logo -
+elif command -v fastfetch >/dev/null 2>&1; then
+  fastfetch -c "$HOME/.config/fastfetch/config-v2.jsonc"
 fi
 
 if command -v lsd >/dev/null 2>&1; then
