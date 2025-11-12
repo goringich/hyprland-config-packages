@@ -14,11 +14,32 @@ if [ -n "$(grep -i nixos < /etc/os-release)" ]; then
   exit 1
 fi
 
-themes_dir="$HOME/.oh-my-zsh/themes"
 file_extension=".zsh-theme"
+themes_dirs=(
+    "$HOME/.oh-my-zsh/themes"
+    "/usr/share/oh-my-zsh/themes"
+    "$HOME/.config/oh-my-zsh/themes"
+)
 
+declare -A seen_themes
+themes_array=()
 
-themes_array=($(find -L "$themes_dir" -type f -name "*$file_extension" -exec basename {} \; | sed -e "s/$file_extension//"))
+for dir in "${themes_dirs[@]}"; do
+    [[ -d "$dir" ]] || continue
+        while IFS= read -r theme_file; do
+            rel_path="${theme_file#${dir}/}"
+            rel_path="${rel_path%$file_extension}"
+            rel_path="${rel_path#./}"
+        [[ -z "$rel_path" ]] && continue
+        if [[ -z ${seen_themes["$rel_path"]} ]]; then
+            themes_array+=("$rel_path")
+            seen_themes["$rel_path"]=1
+        fi
+    done < <(find -L "$dir" -type f -name "*$file_extension" -print)
+done
+
+IFS=$'\n' themes_array=($(sort <<<"${themes_array[*]}"))
+unset IFS
 
 # Add "Random" option to the beginning of the array
 themes_array=("Random" "${themes_array[@]}")
@@ -29,10 +50,11 @@ menu() {
     for theme in "${themes_array[@]}"; do
         echo "$theme"
     done
-}
 
-main() {
+    if ((${#themes_array[@]})); then
+        mapfile -t themes_array < <(printf '%s
     choice=$(menu | ${rofi_command})
+    fi
 
     # if nothing selected, script won't change anything
     if [ -z "$choice" ]; then

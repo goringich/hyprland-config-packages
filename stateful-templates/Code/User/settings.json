@@ -4,5 +4,10 @@
     "chat.agent.thinkingStyle": "expanded",
     "explorer.confirmDelete": false,
     "files.autoSave": "afterDelay",
-    "explorer.confirmDragAndDrop": false
+    "explorer.confirmDragAndDrop": false,
+    "github.copilot.chat.terminal.enabled": false,
+    "github.copilot.chat.commandExecution": "disabled",
+    "github.copilot.chat.experimentalToolUsage": "disabled",
+    "continue.enableCommandExecution": false,
+    "continue.autoApproveCommands": false
 }
