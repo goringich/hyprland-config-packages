@@ -1,133 +1,161 @@
-# Choose oh-my-zsh install location (user clone or system package)
-if [[ -d "$HOME/.oh-my-zsh" ]]; then
+# --- oh-my-zsh + powerlevel10k profile ---
+if [[ -z "${ZSH:-}" ]]; then
+  if [[ -d "$HOME/.oh-my-zsh" ]]; then
     export ZSH="$HOME/.oh-my-zsh"
-else
+  else
     export ZSH="/usr/share/oh-my-zsh"
+  fi
+fi
+if [[ -z "${ZSH_CUSTOM:-}" ]]; then
+  export ZSH_CUSTOM="$HOME/.config/oh-my-zsh/custom"
 fi
 
-ZSH_THEME="blinks"
+export POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
-plugins=(
-    git
-    archlinux
-)
+if ! typeset -p plugins >/dev/null 2>&1; then
+  plugins=()
+fi
+typeset -Ua plugins
+for _p in git archlinux fzf extract; do
+  [[ " ${plugins[*]} " == *" ${_p} "* ]] || plugins+=("${_p}")
+done
+unset _p
 
-source "$ZSH/oh-my-zsh.sh"
+if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
+  source "$ZSH/oh-my-zsh.sh"
+fi
 
-# Load custom shims/aliases for modern CLI replacements
+# --- extra tooling and environment ---
 if [[ -f "$HOME/.config/shell/shims.sh" ]]; then
-    source "$HOME/.config/shell/shims.sh"
+  source "$HOME/.config/shell/shims.sh"
 fi
 
-# Check archlinux plugin commands here
-# https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/archlinux
+# CachyOS defaults
+DISABLE_MAGIC_FUNCTIONS="true"
+ENABLE_CORRECTION="true"
+COMPLETION_WAITING_DOTS="true"
+export HISTCONTROL=ignoreboth
+export HISTIGNORE="&:[bf]g:c:clear:history:exit:q:pwd:* --help"
+export LESS_TERMCAP_md="$(tput bold 2> /dev/null; tput setaf 2 2> /dev/null)"
+export LESS_TERMCAP_me="$(tput sgr0 2> /dev/null)"
+export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 
-# Display Pokemon-colorscripts
-# Project page: https://gitlab.com/phoneybadger/pokemon-colorscripts#on-other-distros-and-macos
+# Aliases from CachyOS profile
+alias make="make -j$(nproc)"
+alias ninja="ninja -j$(nproc)"
+alias n="ninja"
+alias c="clear"
+alias rmpkg="sudo pacman -Rsn"
+alias cleanch="sudo pacman -Scc"
+alias fixpacman="sudo rm /var/lib/pacman/db.lck"
+alias update="sudo pacman -Syu"
+alias apt="man pacman"
+alias apt-get="man pacman"
+alias please="sudo"
+alias tb="nc termbin.com 9999"
+alias cleanup="sudo pacman -Rsn $(pacman -Qtdq)"
+alias jctl="journalctl -p 3 -xb"
+alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
+
 if command -v pokemon-colorscripts >/dev/null 2>&1 && command -v fastfetch >/dev/null 2>&1; then
-    pokemon-colorscripts --no-title -s -r |
-        fastfetch -c "$HOME/.config/fastfetch/config-pokemon.jsonc" \
-                            --logo-type file-raw --logo-height 10 --logo-width 5 --logo -
+  pokemon-colorscripts --no-title -s -r |
+    fastfetch -c "$HOME/.config/fastfetch/config-pokemon.jsonc" \
+      --logo-type file-raw --logo-height 10 --logo-width 5 --logo -
 fi
 
-# fastfetch. Will be disabled if above colorscript was chosen to install
-#fastfetch -c $HOME/.config/fastfetch/config-compact.jsonc
-
-# Set-up icons for files/directories in terminal using lsd
 if command -v lsd >/dev/null 2>&1; then
-    alias ls='lsd'
-    alias l='ls -l'
-    alias la='ls -a'
-    alias lla='ls -la'
-    alias lt='ls --tree'
+  alias ls='lsd'
+  alias l='ls -l'
+  alias la='ls -a'
+  alias lla='ls -la'
+  alias lt='ls --tree'
 fi
 
-# Set-up FZF key bindings (CTRL R for fuzzy history finder)
 if command -v fzf >/dev/null 2>&1; then
-    source <(fzf --zsh)
+  source <(fzf --zsh)
 fi
 
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 setopt appendhistory
-alias telegram-desktop="QT_QPA_PLATFORM=xcb /usr/bin/telegram-desktop"
+alias telegram-desktop='QT_QPA_PLATFORM=xcb /usr/bin/telegram-desktop'
 export PATH="$HOME/.local/bin:$PATH"
 
-# === SSH Agent Configuration ===
-# SSH Agent environment file
 SSH_AGENT_ENV_FILE="$HOME/.ssh-agent-env"
-
-# Function to start SSH agent
 start_ssh_agent() {
-    echo "Starting SSH agent..."
-    ssh-agent -s > "$SSH_AGENT_ENV_FILE"
-    source "$SSH_AGENT_ENV_FILE" > /dev/null
+  echo "Starting SSH agent..."
+  ssh-agent -s > "$SSH_AGENT_ENV_FILE"
+  source "$SSH_AGENT_ENV_FILE" > /dev/null
 }
 
-# Function to check if SSH agent is running
 is_ssh_agent_running() {
-    if [ -n "$SSH_AUTH_SOCK" ] && [ -S "$SSH_AUTH_SOCK" ]; then
-        ssh-add -l >/dev/null 2>&1
-        return $?
-    fi
-    return 1
+  if [[ -n "$SSH_AUTH_SOCK" && -S "$SSH_AUTH_SOCK" ]]; then
+    ssh-add -l >/dev/null 2>&1
+    return $?
+  fi
+  return 1
 }
 
-# Load SSH agent environment if it exists
-if [ -f "$SSH_AGENT_ENV_FILE" ]; then
-    source "$SSH_AGENT_ENV_FILE" > /dev/null
+if [[ -f "$SSH_AGENT_ENV_FILE" ]]; then
+  source "$SSH_AGENT_ENV_FILE" > /dev/null
 fi
 
-# Start SSH agent if not running
 if ! is_ssh_agent_running; then
-    start_ssh_agent
+  start_ssh_agent
 fi
 
-# Auto-load SSH keys (only if agent has no keys loaded)
-if ssh-add -l >/dev/null 2>&1; then
-    # Agent has keys loaded
-    :
-else
-    # No keys loaded, add them silently
-    for key in $HOME/.ssh/id_*(N) $HOME/.ssh/*-key(N); do
-        if [ -f "$key" ] && [ "${key##*.}" != "pub" ]; then
-            ssh-add "$key" 2>/dev/null
-        fi
-    done
+if ! ssh-add -l >/dev/null 2>&1; then
+  for key in $HOME/.ssh/id_*(N) $HOME/.ssh/*-key(N); do
+    if [[ -f "$key" && "${key##*.}" != "pub" ]]; then
+      ssh-add "$key" 2>/dev/null
+    fi
+  done
 fi
 
-# === Zoxide Configuration ===
 if command -v zoxide >/dev/null 2>&1; then
-    # Initialize zoxide (smart cd replacement)
-    eval "$(zoxide init zsh)"
-
-    # Aliases for zoxide
-    alias cd='z'
-    alias cdi='zi'  # Interactive selection
-    alias ..='z ..'
-    alias ...='z ../..'
-    alias ....='z ../../..'
+  eval "$(zoxide init zsh)"
+  alias cd='z'
+  alias cdi='zi'
+  alias ..='z ..'
+  alias ...='z ../..'
+  alias ....='z ../../..'
 fi
 
 if [[ -f "$HOME/.config/broot/launcher/bash/br" ]]; then
-    source "$HOME/.config/broot/launcher/bash/br"
+  source "$HOME/.config/broot/launcher/bash/br"
 fi
-# autosuggestions (показывает серым подсказки по истории)
+
+if [[ -r /usr/share/fzf/key-bindings.zsh ]]; then
+  source /usr/share/fzf/key-bindings.zsh
+fi
+if [[ -r /usr/share/fzf/completion.zsh ]]; then
+  source /usr/share/fzf/completion.zsh
+fi
 if [[ -r /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
-    source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+  source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 fi
-
-# syntax highlighting (подсвечивает команды как в IDE)
 if [[ -r /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
-    source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+  source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+if [[ -r /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh ]]; then
+  source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+fi
+if [[ -r /usr/share/doc/pkgfile/command-not-found.zsh ]]; then
+  source /usr/share/doc/pkgfile/command-not-found.zsh
 fi
 
-# Powerlevel10k theme configuration (optional)
-if [[ "$ZSH_THEME" == "powerlevel10k/powerlevel10k" ]]; then
-    if [[ -f "$HOME/.p10k.zsh" ]]; then
-        source "$HOME/.p10k.zsh"
-    elif [[ -f "$HOME/.config/p10k.zsh" ]]; then
-        source "$HOME/.config/p10k.zsh"
-    fi
+export FZF_BASE=/usr/share/fzf
+
+bindkey -v
+export KEYTIMEOUT=1
+setopt TRANSIENT_RPROMPT
+autoload -Uz colors && colors
+ZLE_RPROMPT_INDENT=0
+PROMPT_EOL_MARK=''
+
+if [[ -f "$HOME/.config/p10k.zsh" ]]; then
+  source "$HOME/.config/p10k.zsh"
 fi
+# --- end oh-my-zsh + powerlevel10k profile ---
