@@ -41,7 +41,7 @@ class VpnFirstStartupTests(unittest.TestCase):
         "hiddify": "#!/bin/sh\nexit 0\n",
         "hidi": (
           "#!/bin/sh\n"
-          "echo 'hidi on' >> \"$TEST_LAUNCH_LOG\"\n"
+          "echo 'hidi provider-on' >> \"$TEST_LAUNCH_LOG\"\n"
           "touch \"$TEST_HIDI_FLAG\"\n"
         ),
         "hyprctl": (
@@ -96,18 +96,18 @@ class VpnFirstStartupTests(unittest.TestCase):
     self.assertIn("[workspace 5 silent]", launches[0])
     self.assertIn("[workspace 1 silent]", launches[1])
     self.assertIn("--restore-last-session", launches[1])
-    self.assertNotIn("hidi on", launches)
+    self.assertNotIn("hidi provider-on", launches)
 
   def test_disconnected_proxy_requests_last_profile(self):
     result, launches, log = self.run_startup(proxy_ready=False, timeout="3", recover_after_hidi=True)
     self.assertEqual(result.returncode, 0, log)
-    self.assertIn("hidi on", launches)
+    self.assertIn("hidi provider-on", launches)
     self.assertTrue(any("[workspace 1 silent]" in line for line in launches))
 
   def test_unavailable_proxy_blocks_chrome(self):
     result, launches, log = self.run_startup(proxy_ready=False, timeout="3")
     self.assertNotEqual(result.returncode, 0)
-    self.assertIn("hidi on", launches)
+    self.assertIn("hidi provider-on", launches)
     self.assertFalse(any("[workspace 1 silent]" in line for line in launches))
     self.assertIn("Chrome remains closed", log)
 

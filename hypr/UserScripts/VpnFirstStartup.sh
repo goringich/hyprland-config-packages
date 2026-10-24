@@ -88,17 +88,16 @@ request_last_profile() {
     return 0
   fi
 
-  # hidi on already reuses a running provider, starts Hiddify when needed,
-  # and calls Hiddify Core StartService with the last selected profile.
-  # Its system egress convergence may require sudo. Run it noninteractively
-  # and with a bounded timeout; do not block UI or browser on sudo prompts.
+  # provider-on is unprivileged: it restores Hiddify's last profile
+  # without touching the root-owned Codex egress broker. Never invoke the
+  # privileged 'hidi on' flow automatically from a login session.
   (
     local rc=0
     timeout --signal=TERM --kill-after=5s "${hidi_timeout}s" \
-      hidi on </dev/null >/dev/null 2>&1 || rc=$?
-    log "hidi activation finished rc=$rc"
+      hidi provider-on </dev/null >/dev/null 2>&1 || rc=$?
+    log "hidi provider-only activation finished rc=$rc"
   ) &
-  log "Requested last Hiddify profile via hidi on"
+  log "Requested last Hiddify profile via hidi provider-on"
 }
 
 launch_chrome() {
@@ -140,8 +139,40 @@ launch_chrome() {
     return 1
   fi
 
+  # Dispatch only requests the original guarded command. The guard may
+  # deliberately skip Chrome if GPU/session safe mode is active.
+  if [[ "$browser_command" == *'SessionStartupGuard.sh'* ]] &&
+    [[ -f "$HOME/.local/state/session-startup-guard/state.env" ]] &&
+    grep -q '^SAFE_MODE=1
+}
+
+# The already-connected case does not reconfigure a healthy provider.
+if proxy_ready; then
+  log "Existing Hiddify proxy ready"
+  launch_hiddify_if_missing || true
+else
+  # This is the only path that actively attempts last-profile restoration.
+  # Window placement for Hiddify's systemd-run launcher is handled by rules.
+  request_last_profile
+fi
+
+for (( second = 0; second <= wait_seconds; second += 3 )); do
+  if proxy_ready; then
+    launch_chrome
+    exit $?
+  fi
+  if (( second < wait_seconds )); then
+    sleep 3
+  fi
+done
+
+log "No verified Hiddify proxy after ${wait_seconds}s; Chrome remains closed"
+exit 1
+ "$HOME/.local/state/session-startup-guard/state.env"; then
+    log "Session safe mode active: Chrome startup guarded, other apps may also be skipped"
+  fi
   hyprctl dispatch exec "[workspace 1 silent] $browser_command" >/dev/null
-  log "Requested guarded Chrome on workspace 1 after proxy verification"
+  log "Dispatched guarded Chrome on workspace 1 after proxy verification (not proof of window creation)"
 }
 
 # The already-connected case does not reconfigure a healthy provider.
