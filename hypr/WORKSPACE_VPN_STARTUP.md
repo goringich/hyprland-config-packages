@@ -27,13 +27,19 @@ For unattended connection, a tested supported control interface for the installe
 
 This repository's Hyprland export was last updated in November 2025. Inspect the CURRENT host configuration before deploying. Do NOT run bin/import.sh for this small change: it uses rsync --delete and can overwrite unrelated live configuration.
 
-After merging and pulling the branch on the host, copy only these files if the host still sources the same Startup_Apps.conf and WindowRules.conf:
+On the host, clone/pull the repository and run `bash bin/apply-vpn-first-workspaces.sh`. The installer checks that Hyprland sources the expected files and that there is one known Chrome autostart entry. It modifies only that entry, adds two app-specific window rules, and installs VpnFirstStartup.sh. It preserves unrelated local customizations, creates timestamped backups under XDG_STATE_HOME/hypr, and can be run repeatedly. If the live configuration differs, the installer stops rather than replacing it wholesale.
 
-- hypr/UserConfigs/Startup_Apps.conf -> ~/.config/hypr/UserConfigs/Startup_Apps.conf
-- hypr/UserConfigs/WindowRules.conf -> ~/.config/hypr/UserConfigs/WindowRules.conf
-- hypr/UserScripts/VpnFirstStartup.sh -> ~/.config/hypr/UserScripts/VpnFirstStartup.sh
+To run from a temporary checkout on CachyOS:
 
-Preserve other local customizations; prefer a three-way merge instead of overwriting the host's files. The script runs using bash, so an executable bit is not required. Disable duplicate Hiddify "Start at login" if the app and Hyprland both try to start it.
+```bash
+set -euo pipefail
+tmp="$(mktemp -d)"
+trap 'rm -rf "$tmp"' EXIT
+git clone --quiet --depth 1 https://github.com/goringich/hyprland-config-packages.git "$tmp/repo"
+bash "$tmp/repo/bin/apply-vpn-first-workspaces.sh"
+```
+
+The installer cannot edit GitHub from the host, so treat the repository as the canonical source of the applied startup logic. Review live-only customizations separately before exporting them. The script runs using bash, so an executable bit is not required. Disable duplicate Hiddify "Start at login" if the app and Hyprland both try to start it.
 
 Check the desktop command with "command -v hiddify" or "gtk-launch app.hiddify.com", and compare actual window classes using "hyprctl clients -j". The installed window-rule syntax must also match the host's Hyprland version.
 
