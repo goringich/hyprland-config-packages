@@ -25,7 +25,9 @@ The Hiddify desktop app itself cannot be assumed to auto-connect when its GUI op
 
 The startup gate skips reconnection if the proxy is already usable; otherwise it invokes the unprivileged `hidi provider-on` command with a bounded timeout, in the background with stdin closed. Install the matching provider-only implementation from `goringich/system-bootstrap` before restarting the desktop. Chrome remains blocked until HTTPS succeeds through SOCKS `127.0.0.1:12334`.
 
-Important: the canonical `hidi provider-on` also converges the privileged Codex egress broker/relay and may require `sudo`. It can fail at unattended login when no sudo authority is available, even after the local Hiddify proxy connects. No passwordless sudo is created. The startup log captures only the exit code, not private profile material.
+Important: `hidi provider-on` restores and verifies the desktop Hiddify provider without `sudo` or modifying privileged Codex egress broker/relay state. Full privileged convergence remains a separate explicit `hidi on` operation, not a desktop-login prerequisite. The startup log records only the provider-only exit code, never profile material.
+
+The host's normal app autostart is also protected by `SessionStartupGuard.sh run-shell-if-normal`. This intentionally skips VS Code, Telegram and other applications when `SAFE_MODE=1`. A suppressed app start must be diagnosed via `~/.local/state/session-startup-guard/state.env` and `~/__home_organized/logs/session-startup-guard.log`, not bypassed blindly.
 
 The host's existing saved Chrome command uses `SessionStartupGuard.sh run-shell-if-normal chrome-restore`, protecting safe-mode boots. The VPN-first script preserves it and expands the original Hyprland-only `$scriptsDir` variable to the installed script directory before dispatching it. It refuses to bypass the guard if its file is missing.
 
