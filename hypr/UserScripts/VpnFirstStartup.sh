@@ -64,17 +64,28 @@ proxy_ready() {
 }
 
 launch_chrome() {
-  local chrome="$HOME/.local/bin/google-chrome-stable"
-  if [[ ! -x "$chrome" ]]; then
-    chrome="$(command -v google-chrome-stable || true)"
-  fi
-  if [[ -z "$chrome" ]]; then
-    log "Chrome wrapper and google-chrome-stable are missing"
-    return 1
+  local command_file="$HOME/.config/hypr/UserConfigs/VpnFirstBrowserCommand"
+  local browser_command=""
+  if [[ -f "$command_file" ]]; then
+    IFS= read -r browser_command < "$command_file" || true
+    if [[ -z "$browser_command" ]]; then
+      log "Saved browser command is empty; Chrome remains closed"
+      return 1
+    fi
+  else
+    local chrome="$HOME/.local/bin/google-chrome-stable"
+    if [[ ! -x "$chrome" ]]; then
+      chrome="$(command -v google-chrome-stable || true)"
+    fi
+    if [[ -z "$chrome" ]]; then
+      log "Chrome wrapper and google-chrome-stable are missing"
+      return 1
+    fi
+    browser_command="$chrome --restore-last-session"
   fi
 
-  hyprctl dispatch exec "[workspace 1 silent] $chrome --restore-last-session" >/dev/null
-  log "Requested Chrome on workspace 1 after proxy check"
+  hyprctl dispatch exec "[workspace 1 silent] $browser_command" >/dev/null
+  log "Requested browser on workspace 1 after proxy check"
 }
 
 launch_hiddify || exit 1

@@ -12,7 +12,7 @@ SCRIPT = pathlib.Path(__file__).resolve().parents[1] / "hypr/UserScripts/VpnFirs
 
 
 class VpnFirstStartupTests(unittest.TestCase):
-  def run_startup(self, proxy_ready=True, proxy_port="12334", timeout="0"):
+  def run_startup(self, proxy_ready=True, proxy_port="12334", timeout="0", saved_browser_command=None):
     with tempfile.TemporaryDirectory() as tmp:
       root = pathlib.Path(tmp)
       home = root / "home"
@@ -21,6 +21,10 @@ class VpnFirstStartupTests(unittest.TestCase):
       (home / ".local/bin").mkdir(parents=True)
       (home / ".local/bin/google-chrome-stable").write_text("#!/bin/sh\nexit 0\n")
       (home / ".local/bin/google-chrome-stable").chmod(0o755)
+      if saved_browser_command is not None:
+        config_dir = home / ".config/hypr/UserConfigs"
+        config_dir.mkdir(parents=True)
+        (config_dir / "VpnFirstBrowserCommand").write_text(saved_browser_command + "\n")
 
       for name, content in {
         "hiddify": "#!/bin/sh\nexit 0\n",
@@ -55,6 +59,16 @@ class VpnFirstStartupTests(unittest.TestCase):
     self.assertIn("[workspace 5 silent]", launches[0])
     self.assertIn("[workspace 1 silent]", launches[1])
     self.assertIn("--restore-last-session", launches[1])
+
+  def test_vpn_ready_launches_saved_browser_command(self):
+    result, launches, _ = self.run_startup(
+      saved_browser_command="chromium --restore-last-session --enable-features=WaylandWindowDecorations"
+    )
+    self.assertEqual(result.returncode, 0)
+    self.assertEqual(len(launches), 2)
+    self.assertIn("chromium --restore-last-session", launches[1])
+    self.assertIn("[workspace 1 silent]", launches[1])
+    self.assertNotIn("google-chrome-stable", launches[1])
 
   def test_vpn_unavailable_blocks_chrome(self):
     result, launches, log = self.run_startup(proxy_ready=False)
