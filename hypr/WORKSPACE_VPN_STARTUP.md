@@ -4,7 +4,7 @@
 
 - Obsidian is placed on workspace 4 whenever its main window opens.
 - Hiddify is placed on workspace 5 whenever its window opens.
-- At login, VpnFirstStartup.sh reuses an existing healthy proxy or calls `hidi on` to reconnect the last profile. Hiddify appears on workspace 5.
+- At login, VpnFirstStartup.sh reuses an existing healthy proxy or calls `hidi provider-on` to reconnect the last profile. Hiddify appears on workspace 5.
 - When the proxy can complete an HTTPS request, the original guarded Chrome startup runs on workspace 1, restoring its session.
 - If the proxy is unavailable for 300 seconds, Chrome is NOT started automatically. Check ~/.local/state/hypr/vpn-first-startup.log.
 - VS Code and Telegram autostart settings are unchanged.
@@ -21,11 +21,11 @@ The installer also detects `hyprctl version`: Hyprland 0.53+ requires the modern
 
 ## Last-profile restoration via canonical `hidi`
 
-The Hiddify desktop app itself cannot be assumed to auto-connect when its GUI opens. This workstation already has a canonical `hidi on` controller in `goringich/system-bootstrap`: when no usable proxy exists, it reuses/launches the Hiddify Core and calls its loopback gRPC `StartService` with an empty request, restoring the last saved profile. No new VPN control plane or subscription handling is needed.
+The Hiddify desktop app itself cannot be assumed to auto-connect when its GUI opens. This workstation already has a canonical `hidi provider-on` controller in `goringich/system-bootstrap`: when no usable proxy exists, it reuses/launches the Hiddify Core and calls its loopback gRPC `StartService` with an empty request, restoring the last saved profile. No new VPN control plane or subscription handling is needed.
 
-The startup gate skips reconnection if the proxy is already usable; otherwise it invokes `hidi on` with a bounded timeout, in the background with stdin closed. Chrome remains blocked until HTTPS succeeds through SOCKS `127.0.0.1:12334`.
+The startup gate skips reconnection if the proxy is already usable; otherwise it invokes the unprivileged `hidi provider-on` command with a bounded timeout, in the background with stdin closed. Install the matching provider-only implementation from `goringich/system-bootstrap` before restarting the desktop. Chrome remains blocked until HTTPS succeeds through SOCKS `127.0.0.1:12334`.
 
-Important: the canonical `hidi on` also converges the privileged Codex egress broker/relay and may require `sudo`. It can fail at unattended login when no sudo authority is available, even after the local Hiddify proxy connects. No passwordless sudo is created. The startup log captures only the exit code, not private profile material.
+Important: the canonical `hidi provider-on` also converges the privileged Codex egress broker/relay and may require `sudo`. It can fail at unattended login when no sudo authority is available, even after the local Hiddify proxy connects. No passwordless sudo is created. The startup log captures only the exit code, not private profile material.
 
 The host's existing saved Chrome command uses `SessionStartupGuard.sh run-shell-if-normal chrome-restore`, protecting safe-mode boots. The VPN-first script preserves it and expands the original Hyprland-only `$scriptsDir` variable to the installed script directory before dispatching it. It refuses to bypass the guard if its file is missing.
 
