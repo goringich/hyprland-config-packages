@@ -11,6 +11,14 @@
 
 The SOCKS check proves that a request succeeded through the configured local proxy; it does not verify the remote exit IP, a TUN interface, or every Chrome request's routing.
 
+## Host configuration compatibility (October 2026)
+
+The original installer required the exact line `exec-once = [workspace 1 silent] ...google-chrome-stable --restore-last-session`. Current installations may use different Chrome launch arguments or a separate `*.conf` file. The updated installer finds one active Chrome/Chromium/Brave `exec-once` command in the local Hyprland config tree, comments out only that original entry, saves its complete command in `UserConfigs/VpnFirstBrowserCommand`, and installs one VPN-gated startup hook. Other autostart lines are not replaced. If zero or multiple entries are found, installation stops safely and prints a diagnostic rather than guessing. Chrome startup controlled by systemd or XDG autostart needs a separate host-specific adjustment.
+
+The installer also detects `hyprctl version`: Hyprland 0.53+ requires the modern `windowrule = match:class ..., workspace N silent` syntax; older versions use `windowrule = workspace N silent, class:...`. It can migrate precisely matching old application rules, leaving unrelated rules intact.
+
+`hyprctl reload` does not run `exec-once`. The VPN startup log appears only after a new Hyprland session, or explicit manual invocation of `bash ~/.config/hypr/UserScripts/VpnFirstStartup.sh`. Run `hyprctl configerrors` after installation.
+
 ## Critical Hiddify limitation
 
 Hiddify App 4.1.1 currently DOES NOT auto-connect its last selected profile on desktop just because the app starts. "Start at login" only opens the app. The upstream 4.1.1 HiddifyCli "tunnel activate" implementation also has a reported bug. Therefore this change DOES NOT implement unattended connection of the last profile. It deliberately waits for a real connection rather than reporting a false success or launching Chrome early.
