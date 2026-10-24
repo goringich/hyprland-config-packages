@@ -4,8 +4,8 @@
 
 - Obsidian is placed on workspace 4 whenever its main window opens.
 - Hiddify is placed on workspace 5 whenever its window opens.
-- At login, VpnFirstStartup.sh requests Hiddify on workspace 5, then checks the local SOCKS proxy.
-- When the proxy can complete an HTTPS request, Chrome starts on workspace 1 with --restore-last-session via the existing wrapper.
+- At login, VpnFirstStartup.sh reuses an existing healthy proxy or calls `hidi on` to reconnect the last profile. Hiddify appears on workspace 5.
+- When the proxy can complete an HTTPS request, the original guarded Chrome startup runs on workspace 1, restoring its session.
 - If the proxy is unavailable for 300 seconds, Chrome is NOT started automatically. Check ~/.local/state/hypr/vpn-first-startup.log.
 - VS Code and Telegram autostart settings are unchanged.
 
@@ -19,17 +19,25 @@ The installer also detects `hyprctl version`: Hyprland 0.53+ requires the modern
 
 `hyprctl reload` does not run `exec-once`. The VPN startup log appears only after a new Hyprland session, or explicit manual invocation of `bash ~/.config/hypr/UserScripts/VpnFirstStartup.sh`. Run `hyprctl configerrors` after installation.
 
-## Critical Hiddify limitation
+## Last-profile restoration via canonical `hidi`
 
-Hiddify App 4.1.1 currently DOES NOT auto-connect its last selected profile on desktop just because the app starts. "Start at login" only opens the app. The upstream 4.1.1 HiddifyCli "tunnel activate" implementation also has a reported bug. Therefore this change DOES NOT implement unattended connection of the last profile. It deliberately waits for a real connection rather than reporting a false success or launching Chrome early.
+The Hiddify desktop app itself cannot be assumed to auto-connect when its GUI opens. This workstation already has a canonical `hidi on` controller in `goringich/system-bootstrap`: when no usable proxy exists, it reuses/launches the Hiddify Core and calls its loopback gRPC `StartService` with an empty request, restoring the last saved profile. No new VPN control plane or subscription handling is needed.
+
+The startup gate skips reconnection if the proxy is already usable; otherwise it invokes `hidi on` with a bounded timeout, in the background with stdin closed. Chrome remains blocked until HTTPS succeeds through SOCKS `127.0.0.1:12334`.
+
+Important: the canonical `hidi on` also converges the privileged Codex egress broker/relay and may require `sudo`. It can fail at unattended login when no sudo authority is available, even after the local Hiddify proxy connects. No passwordless sudo is created. The startup log captures only the exit code, not private profile material.
+
+The host's existing saved Chrome command uses `SessionStartupGuard.sh run-shell-if-normal chrome-restore`, protecting safe-mode boots. The VPN-first script preserves it and expands the original Hyprland-only `$scriptsDir` variable to the installed script directory before dispatching it. It refuses to bypass the guard if its file is missing.
+
+A successful SOCKS probe does not verify Chrome's actual routing or VPN public IP. Full automatic last-profile restoration still requires a real post-reboot acceptance test.
 
 Sources:
+- `goringich/system-bootstrap/scripts/hidi.sh` (verified last-profile gRPC implementation)
+- `goringich/system-bootstrap/home/.config/hypr/scripts/SessionStartupGuard.sh`
 - https://github.com/hiddify/hiddify-app/issues/2338
-- https://github.com/hiddify/hiddify-app/issues/1161
-- https://hiddify.com/app/How-to-use-Hiddify-app/
-- https://wiki.hypr.land/0.52.0/Configuring/Window-Rules/
+- https://hiddify.com/app/HiddifyCli-guide/
 
-For unattended connection, a tested supported control interface for the installed Hiddify build or a separate private HiddifyCli profile configuration is still required. Do not commit subscription URLs, proxy credentials, profile databases, or exported secrets to this public repository. Do not assume a GUI launch auto-connects.
+Never commit subscription URLs, exported profile databases, or credentials to this public repository.
 
 ## Deployment to existing CachyOS installation
 
